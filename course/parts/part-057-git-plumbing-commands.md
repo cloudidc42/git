@@ -720,14 +720,16 @@ git update-ref refs/heads/master <new-hash> <old-hash-ที่คาดว่�
 ตัวอย่างการใช้งานจริง — ลองสร้างสถานการณ์ที่ค่าที่คาดไว้ผิด:
 
 ```bash
-git update-ref refs/heads/experiment HEAD "0000000000000000000000000000000000000000"
+git update-ref refs/heads/experiment HEAD "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 ```
 
 ```
-fatal: update_ref failed for ref 'refs/heads/experiment': cannot lock ref 'refs/heads/experiment': is at 9f2c8a1d4e7b3f6a9c2d5e8f1b4a7d0c3e6f9a2b but expected 0000000000000000000000000000000000000000
+fatal: update_ref failed for ref 'refs/heads/experiment': cannot lock ref 'refs/heads/experiment': is at 9f2c8a1d4e7b3f6a9c2d5e8f1b4a7d0c3e6f9a2b but expected aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ```
 
-Git ปฏิเสธการเขียนทันที เพราะค่าปัจจุบันจริง ๆ (`9f2c8a1...`) ไม่ตรงกับค่าที่เราบอกว่า "คาดว่าจะเป็น" (`0000...`) — ฟีเจอร์นี้สำคัญมากในระบบที่มีการ push จากหลายที่พร้อมกัน (เช่น server-side ของ GitHub/GitLab เอง ก็ใช้กลไกแบบนี้ในการตรวจสอบว่า push ที่ส่งเข้ามาไม่ชนกับการเปลี่ยนแปลงที่เพิ่งเกิดขึ้น)
+Git ปฏิเสธการเขียนทันที เพราะค่าปัจจุบันจริง ๆ (`9f2c8a1...`) ไม่ตรงกับค่าที่เราบอกว่า "คาดว่าจะเป็น" (`aaaa...`) — ฟีเจอร์นี้สำคัญมากในระบบที่มีการ push จากหลายที่พร้อมกัน (เช่น server-side ของ GitHub/GitLab เอง ก็ใช้กลไกแบบนี้ในการตรวจสอบว่า push ที่ส่งเข้ามาไม่ชนกับการเปลี่ยนแปลงที่เพิ่งเกิดขึ้น)
+
+> **หมายเหตุ:** ค่าเก่าที่เป็นเลข `0` ล้วน 40 ตัว (`000...000`) มีความหมายพิเศษใน `update-ref` คือ "คาดว่า ref นี้ยังไม่มีอยู่เลย" (ใช้ตอนต้องการสร้าง ref ใหม่แบบปลอดภัย ป้องกันการเขียนทับ ref ที่มีอยู่ก่อนแล้วโดยไม่ตั้งใจ) ถ้า ref นั้นมีอยู่แล้วจริง จะได้ข้อความ error ว่า `reference already exists` แทน ไม่ใช่ข้อความ `is at ... but expected ...` เหมือนกรณีที่ค่าเก่าเป็น hash จริงแต่ไม่ตรงกัน
 
 ### ลบ ref ด้วย `update-ref -d`
 

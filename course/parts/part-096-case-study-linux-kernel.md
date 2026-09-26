@@ -459,7 +459,7 @@ git clone maintainer-repo contributor-repo
 
 ### ขั้นตอนที่ 1: Contributor เขียนโค้ดและสร้าง commit แบบมีวินัย
 
-ในบทบาท contributor ให้เข้าไปที่ `contributor-repo` แล้วตั้งค่าชื่อ/อีเมลสำหรับฝึก (ถ้ายังไม่เคยตั้งในเครื่อง) จากนั้นสร้างการแก้ไข 2 เรื่องแยกกันเป็น 2 commit:
+ในบทบาท contributor ให้เข้าไปที่ `contributor-repo` แล้วตั้งค่าชื่อ/อีเมลสำหรับฝึก (ถ้ายังไม่เคยตั้งในเครื่อง) จากนั้นสร้างการแก้ไข 3 เรื่องแยกกันเป็น 3 commit (commit ที่ 3 จะถูกเก็บไว้ใช้จำลอง conflict ในขั้นตอนที่ 5):
 
 ```bash
 cd contributor-repo
@@ -480,9 +480,14 @@ git commit -s -m "drivers: example: fix potential null pointer in probe
 echo "## Example driver usage" >> README.md
 git add README.md
 git commit -s -m "docs: add usage note for example driver"
+
+# แก้ไขเรื่องที่ 3: ปรับบรรทัดแรกของ probe() (เก็บไว้ส่งทีหลังในขั้นตอนที่ 5 เพื่อจำลอง conflict)
+sed -i '1s/.*/int probe(void) { if (!dev) return -EINVAL; return 0; }/' drivers/example.c
+git add drivers/example.c
+git commit -s -m "drivers: example: add missing null check before probe"
 ```
 
-สังเกตว่าใช้ flag `-s` ทุกครั้งเพื่อเพิ่ม `Signed-off-by` ตามธรรมเนียมของ kernel และแยกเป็น 2 commit เพราะเป็นคนละเรื่องกัน
+สังเกตว่าใช้ flag `-s` ทุกครั้งเพื่อเพิ่ม `Signed-off-by` ตามธรรมเนียมของ kernel และแยกเป็น 3 commit เพราะเป็นคนละเรื่องกัน
 
 ### ขั้นตอนที่ 2: สร้าง Patch ด้วย `git format-patch`
 
@@ -491,7 +496,7 @@ git format-patch origin/master --cover-letter -o outgoing/
 ls outgoing/
 ```
 
-เปิดดูไฟล์ `0000-cover-letter.patch` แล้วแก้ไขให้มีคำอธิบายภาพรวมของ patch series (ในการใช้งานจริง cover letter จะอธิบายว่าชุด patch นี้ทำอะไรโดยรวม และทำไมถึงจำเป็น) จากนั้นลองเปิดดูไฟล์ `0001-...patch` และ `0002-...patch` เพื่อสังเกตโครงสร้าง metadata และ diff ที่อยู่ในไฟล์เดียวกัน
+เปิดดูไฟล์ `0000-cover-letter.patch` แล้วแก้ไขให้มีคำอธิบายภาพรวมของ patch series (ในการใช้งานจริง cover letter จะอธิบายว่าชุด patch นี้ทำอะไรโดยรวม และทำไมถึงจำเป็น) จากนั้นลองเปิดดูไฟล์ `0001-...patch`, `0002-...patch` และ `0003-...patch` เพื่อสังเกตโครงสร้าง metadata และ diff ที่อยู่ในไฟล์เดียวกัน (ไฟล์ `0003` จะยังไม่ถูกส่งไปตอนนี้ — เก็บไว้ใช้ในขั้นตอนที่ 5)
 
 ### ขั้นตอนที่ 3: จำลองการ "ส่งทาง email" — คัดลอกไฟล์ patch ไปยัง maintainer
 
@@ -524,17 +529,20 @@ git log --format="%h %an <%ae> - %s" -3
 
 ### ขั้นตอนที่ 5: ทดลองสถานการณ์ Conflict และการแก้ไข
 
-ลองสร้างสถานการณ์ที่ maintainer มีการเปลี่ยนแปลงไฟล์เดียวกันไปแล้วก่อนที่ patch จะมาถึง เพื่อจำลอง conflict:
+ลองสร้างสถานการณ์ที่ maintainer มีการเปลี่ยนแปลงไฟล์เดียวกันไปแล้วก่อนที่ patch ที่ 3 (commit ที่ตั้งใจเก็บไว้ไม่ส่งตอนขั้นตอนที่ 3) จะมาถึง เพื่อจำลอง conflict จริง — ให้แน่ใจว่าแก้บรรทัดเดียวกับที่ patch 0003 แก้ (บรรทัดแรกของ `drivers/example.c`) เพื่อให้เกิดการชนกันจริง:
 
 ```bash
 cd ../maintainer-repo
 git commit --allow-empty -m "unrelated maintainer change"
-echo "extra line from maintainer" >> drivers/example.c
+sed -i '1s/.*/int probe(void) { return -ENODEV; }/' drivers/example.c
 git add drivers/example.c
 git commit -m "drivers: example: unrelated maintainer edit"
 
-# ลอง apply patch อีกชุดที่แก้ไฟล์เดียวกันในบรรทัดใกล้เคียง (สมมติมี incoming2/)
-# ถ้าเกิด conflict จะเห็นข้อความแนะนำให้แก้ไขด้วยมือ
+# ตอนนี้ค่อยจำลองว่า patch 0003 เพิ่งถูกส่งมาถึง (ยังไม่เคยคัดลอกมาก่อนหน้านี้)
+cp ../contributor-repo/outgoing/0003-*.patch incoming/
+
+# ลอง apply patch ที่แก้บรรทัดเดียวกันกับที่ maintainer เพิ่งแก้ไปเอง
+# เนื่องจาก context ของ patch ไม่ตรงกับไฟล์ปัจจุบันอีกต่อไป จึงเกิด conflict จริง
 git am incoming/0003-*.patch 2>&1 || true
 
 # ถ้า apply ไม่สำเร็จ ให้ตรวจดูสถานะ

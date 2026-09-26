@@ -60,10 +60,9 @@ GitHub Actions แก้ปัญหานี้โดยการทำให�
 | ปี | เหตุการณ์ |
 |---|---|
 | 2018 (ตุลาคม) | GitHub เปิดตัว GitHub Actions ในรูปแบบ Beta ครั้งแรก โดยตอนนั้นเน้นไปที่การสร้าง "workflow อัตโนมัติ" ทั่วไป ยังไม่ได้เน้น CI/CD เป็นหลัก |
-| 2019 (สิงหาคม) | GitHub Actions เปิดใช้งานแบบ **General Availability (GA)** พร้อมปรับโฟกัสใหม่ให้เน้นไปที่ CI/CD โดยเฉพาะ และเปลี่ยนรูปแบบไฟล์มาเป็น YAML ที่เราใช้กันในปัจจุบัน |
-| 2019 (พฤศจิกายน) | เปิดให้ใช้งานฟรีสำหรับ public repository แบบไม่จำกัด และมีโควตาฟรีสำหรับ private repository ด้วย |
-| 2020 | เพิ่มความสามารถ self-hosted runner, matrix build เต็มรูปแบบ และการรองรับ macOS/Windows runner |
-| 2021–ปัจจุบัน | กลายเป็นหนึ่งในระบบ CI/CD ที่มีคนใช้มากที่สุดในโลก เพราะฝังอยู่ใน GitHub ที่มีนักพัฒนาใช้งานอยู่แล้วหลายสิบล้านคน ไม่ต้องไปตั้งค่า CI/CD service แยกต่างหากอีกต่อไป |
+| 2019 (สิงหาคม) | GitHub ปรับโฟกัส Actions ใหม่ให้เน้นไปที่ CI/CD โดยเฉพาะ (ยังอยู่ในสถานะ beta) เปลี่ยนรูปแบบไฟล์มาเป็น YAML ที่เราใช้กันในปัจจุบัน ประกาศให้ใช้งานฟรีสำหรับ public repository และรองรับ self-hosted runner, matrix build, และ runner บน Linux/macOS/Windows มาตั้งแต่ต้น |
+| 2019 (13 พฤศจิกายน) | GitHub Actions เปิดใช้งานแบบ **General Availability (GA)** อย่างเป็นทางการที่งาน GitHub Universe พร้อมมีโควตาฟรีสำหรับ private repository ด้วย |
+| 2020–ปัจจุบัน | พัฒนาต่อเนื่อง เพิ่ม feature ใหม่ ๆ เรื่อย ๆ (เช่น reusable workflows, environments, composite actions) จนกลายเป็นหนึ่งในระบบ CI/CD ที่มีคนใช้มากที่สุดในโลก เพราะฝังอยู่ใน GitHub ที่มีนักพัฒนาใช้งานอยู่แล้วหลายสิบล้านคน ไม่ต้องไปตั้งค่า CI/CD service แยกต่างหากอีกต่อไป |
 
 ### จุดเด่นที่ทำให้ GitHub Actions ได้รับความนิยมอย่างรวดเร็ว
 
@@ -777,7 +776,7 @@ Self-hosted runner มีประโยชน์เมื่อ:
 ```
 Actions
 ├── All workflows (แสดงทุก workflow ที่รันมาทั้งหมด)
-│   ├── ✅ CI #42 — push by phutjirakul — 2 นาทีที่แล้ว
+│   ├── ✅ CI #42 — push by somchai-jaidee — 2 นาทีที่แล้ว
 │   ├── ❌ CI #41 — pull_request by contributor-x — 1 ชั่วโมงที่แล้ว
 │   └── ✅ Nightly Tests #15 — schedule — 8 ชั่วโมงที่แล้ว
 │
@@ -857,10 +856,10 @@ CI: failing    (พื้นหลังสีแดง)
 https://github.com/<owner>/<repo>/actions/workflows/<workflow-file-name>.yml/badge.svg
 ```
 
-ตัวอย่างจริง สมมติ repository ชื่อ `phutjirakul/my-awesome-project` และไฟล์ workflow ชื่อ `ci.yml`:
+ตัวอย่างจริง สมมติ repository ชื่อ `somchai-jaidee/my-awesome-project` และไฟล์ workflow ชื่อ `ci.yml`:
 
 ```
-https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge.svg
+https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml/badge.svg
 ```
 
 ### วิธีติดใน README.md
@@ -868,7 +867,7 @@ https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge
 ```markdown
 # My Awesome Project
 
-[![CI](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge.svg)](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml)
+[![CI](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml/badge.svg)](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml)
 
 โปรเจกต์ตัวอย่างสำหรับฝึกฝน GitHub Actions
 ```
@@ -887,7 +886,7 @@ https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge
 ถ้ามีหลาย branch (เช่น `main` และ `develop`) และต้องการแสดง badge ของ branch ใดโดยเฉพาะ สามารถเพิ่ม query parameter `?branch=` ต่อท้าย URL ได้:
 
 ```markdown
-[![CI](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml)
+[![CI](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml)
 ```
 
 ### ตัวอย่างการติดหลาย Badge พร้อมกันใน README
@@ -895,8 +894,8 @@ https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge
 ```markdown
 # My Awesome Project
 
-[![CI](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml/badge.svg)](https://github.com/phutjirakul/my-awesome-project/actions/workflows/ci.yml)
-[![Deploy](https://github.com/phutjirakul/my-awesome-project/actions/workflows/deploy.yml/badge.svg)](https://github.com/phutjirakul/my-awesome-project/actions/workflows/deploy.yml)
+[![CI](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml/badge.svg)](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/ci.yml)
+[![Deploy](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/deploy.yml/badge.svg)](https://github.com/somchai-jaidee/my-awesome-project/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 โปรเจกต์ตัวอย่างสำหรับฝึกฝน GitHub Actions ครอบคลุมทั้ง CI และ Deploy อัตโนมัติ

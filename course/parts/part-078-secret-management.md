@@ -933,15 +933,13 @@ git init
 ### ขั้นตอนที่ 1: จำลองสถานการณ์ secret หลุด
 
 ```bash
-# สร้างไฟล์ config ที่มีค่าปลอมชัดเจน (ไม่ใช่รูปแบบจริงของผู้ให้บริการใด ๆ)
+# สร้างโฟลเดอร์ config และไฟล์ที่มีค่าปลอมชัดเจน (ไม่ใช่รูปแบบจริงของผู้ให้บริการใด ๆ)
+mkdir -p config
 cat > config/app-config.txt << 'EOF'
 service_name=demo-payment-service
 api_key=<FAKE_API_KEY_FOR_DEMO_00000000>
 database_password=<FAKE_DB_PASSWORD_FOR_DEMO>
 EOF
-
-mkdir -p config
-mv app-config.txt config/ 2>/dev/null || true
 
 git add config/app-config.txt
 git commit -m "feat: เพิ่มไฟล์ตั้งค่า (จำลองสถานการณ์พลาด commit secret)"

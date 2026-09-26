@@ -409,7 +409,7 @@ updates:
 
 ```json
 {
-  "extends": ["config:base"],
+  "extends": ["config:recommended"],
   "schedule": ["before 6am on monday"],
   "packageRules": [
     {

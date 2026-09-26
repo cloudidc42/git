@@ -289,6 +289,13 @@ cat > pre-receive << 'EOF'
 zero="0000000000000000000000000000000000000000"
 
 while read oldrev newrev refname; do
+  # ตรวจสอบเฉพาะ branch (refs/heads/*) เท่านั้น — ปล่อยผ่าน tag (refs/tags/*)
+  # หรือ ref ประเภทอื่นไปเลย ไม่งั้นกฎ naming convention ของ branch จะไปบล็อกการ push tag ด้วย
+  case "$refname" in
+    refs/heads/*) : ;;
+    *) continue ;;
+  esac
+
   branch=$(echo "$refname" | sed 's#refs/heads/##')
 
   # ข้ามการลบ branch (newrev เป็นค่า zero)
@@ -334,7 +341,7 @@ EOF
 chmod +x pre-receive
 ```
 
-> **อธิบายการทำงานของ hook นี้:** Git จะส่งข้อมูล 3 ค่าต่อบรรทัดเข้าทาง stdin สำหรับทุก ref ที่ถูก push มา (`oldrev newrev refname`) hook ตรวจสอบสองกฎ: (1) ถ้าเป็นการสร้าง branch ใหม่ (`oldrev` เป็นค่า zero ทั้งหมด) ชื่อ branch ต้องขึ้นต้นด้วย `feature/`, `hotfix/`, `release/` หรือเป็น `main` เท่านั้น (2) ถ้า ref ที่ถูก push คือ `main` commit ปลายทางต้องเป็น **merge commit** (มีมากกว่า 1 parent เสมอ ตรวจด้วย `git cat-file -p` นับจำนวนบรรทัด `parent`) และข้อความ commit ต้องมี `Reviewed-by:` อยู่ด้วย ถ้าเงื่อนไขไหนไม่ผ่าน hook จะ `exit 1` ทำให้ Git ปฏิเสธการ push ทั้งหมดทันที
+> **อธิบายการทำงานของ hook นี้:** Git จะส่งข้อมูล 3 ค่าต่อบรรทัดเข้าทาง stdin สำหรับทุก ref ที่ถูก push มา (`oldrev newrev refname`) โดย hook จะ**กรองเอาเฉพาะ ref ที่เป็น branch (`refs/heads/*`)** มาตรวจสอบเท่านั้น — ปล่อยผ่าน ref ประเภทอื่นอย่าง tag (`refs/tags/*`) ไปเลยด้วย `continue` เพื่อไม่ให้กฎการตั้งชื่อ branch ไปบล็อกการ push tag อย่าง `v1.0.0` โดยไม่ตั้งใจ จากนั้น hook ตรวจสอบสองกฎกับ branch ที่เหลือ: (1) ถ้าเป็นการสร้าง branch ใหม่ (`oldrev` เป็นค่า zero ทั้งหมด) ชื่อ branch ต้องขึ้นต้นด้วย `feature/`, `hotfix/`, `release/` หรือเป็น `main` เท่านั้น (2) ถ้า ref ที่ถูก push คือ `main` commit ปลายทางต้องเป็น **merge commit** (มีมากกว่า 1 parent เสมอ ตรวจด้วย `git cat-file -p` นับจำนวนบรรทัด `parent`) และข้อความ commit ต้องมี `Reviewed-by:` อยู่ด้วย ถ้าเงื่อนไขไหนไม่ผ่าน hook จะ `exit 1` ทำให้ Git ปฏิเสธการ push ทั้งหมดทันที
 
 เราจะเห็น hook นี้ทำงานจริงในสถานการณ์ Step 445
 

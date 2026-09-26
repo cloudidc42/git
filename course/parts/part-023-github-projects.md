@@ -1,7 +1,7 @@
 # Part 23: GitHub Projects: บอร์ดจัดการงานแบบ Kanban
 
 > **Step ในหลักสูตรนี้:** Step 221–230
-> **เฟส:** 3 — GitHub เบื้องต้น
+> **เฟส:** 3 — ใช้งาน GitHub อย่างมืออาชีพ ทำ Pull Request, Code Review, Open Source
 > **เป้าหมายของ Part นี้:** เข้าใจ GitHub Projects (v2) อย่างลึกซึ้ง ตั้งแต่แนวคิดพื้นฐาน การสร้างบอร์ด การเพิ่ม Issue/PR จากหลาย Repository เข้าบอร์ดเดียว การสร้างและใช้งาน Custom Fields การตั้ง Automation ให้บอร์ดขยับเองเมื่อสถานะงานเปลี่ยน การใช้งาน Board View แบบ Kanban และ Roadmap View แบบ Timeline การ Filter/Group ข้อมูล ไปจนถึงการแชร์ Project ระดับ Organization และลงมือสร้างบอร์ดจำลองบริหารโปรเจกต์จริงครบวงจร
 
 ---

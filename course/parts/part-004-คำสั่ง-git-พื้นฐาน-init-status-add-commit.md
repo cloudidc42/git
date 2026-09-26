@@ -307,7 +307,7 @@ $ git status
 On branch main
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
+  (use "git restore <file>..." to discard changes in working directory)
 	modified:   README.md
 
 no changes added to commit (use "git add" and/or "git commit -a")
@@ -1692,7 +1692,7 @@ $ git commit -m "feat: add basic HTML skeleton for landing page"
 ```
 
 ```
-[main a1b2c3d (root-commit) a1b2c3d] feat: add basic HTML skeleton for landing page
+[main (root-commit) a1b2c3d] feat: add basic HTML skeleton for landing page
  1 file changed, 9 insertions(+)
  create mode 100644 index.html
 ```

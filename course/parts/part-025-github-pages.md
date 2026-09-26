@@ -1,7 +1,7 @@
 # Part 25: GitHub Pages: การทำเว็บไซต์ฟรีจาก Repository
 
 > **Step ในหลักสูตรนี้:** Step 241–250
-> **เฟส:** 3 — GitHub เบื้องต้น
+> **เฟส:** 3 — ใช้งาน GitHub อย่างมืออาชีพ ทำ Pull Request, Code Review, Open Source
 > **เป้าหมายของ Part นี้:** เข้าใจว่า GitHub Pages คืออะไร เปิดใช้งานเป็น และเลือกวิธี deploy ได้ถูกต้อง (จาก branch หรือผ่าน GitHub Actions) รู้จักโครงสร้างเว็บไซต์ static ที่ GitHub Pages ต้องการ ตั้งค่า custom domain ได้ ใช้ Jekyll และ theme สำเร็จรูปเป็นเบื้องต้น เข้าใจความต่างระหว่าง Project site กับ User/Organization site และแก้ปัญหาที่พบบ่อยได้ด้วยตัวเอง ปิดท้ายด้วยการลงมือ deploy เว็บไซต์ portfolio จริงจนเข้าถึงได้ผ่าน URL สาธารณะ
 
 ---

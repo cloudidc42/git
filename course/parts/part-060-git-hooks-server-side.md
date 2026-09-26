@@ -458,11 +458,13 @@ do
 
   # ── กฎที่ 3: ทุกคอมมิตใหม่ต้องตรง Conventional Commits ──
   # หาว่าคอมมิตไหนบ้างที่ "ใหม่" ใน push ครั้งนี้ (มีอยู่ใน newrev แต่ยังไม่มีใน repo)
+  # ใช้ --no-merges เพราะ merge commit message (เช่น "Merge branch 'x' into main")
+  # มีรูปแบบของตัวเองอยู่แล้ว ไม่ได้ตั้งใจให้ตรงกับ Conventional Commits
   if [ "$oldrev" = "$zero" ]; then
     # branch ใหม่: ตรวจทุกคอมมิตที่ยังไม่เคยอยู่ใน ref อื่นของ repo เลย
-    commit_range=$(git rev-list "$newrev" --not --all)
+    commit_range=$(git rev-list --no-merges "$newrev" --not --all)
   else
-    commit_range=$(git rev-list "$oldrev".."$newrev")
+    commit_range=$(git rev-list --no-merges "$oldrev".."$newrev")
   fi
 
   for commit in $commit_range; do
@@ -481,7 +483,7 @@ exit 0
 
 จุดที่มือใหม่มักพลาดคือคิดว่า `oldrev..newrev` ใช้ได้ในทุกกรณี แต่จริง ๆ แล้วมันใช้ได้เฉพาะกรณีที่ branch นั้น**มีอยู่แล้ว**ก่อนหน้า (ไม่ใช่ branch ใหม่) เพราะถ้า `oldrev` เป็น zero hash การเขียน `git rev-list zero..newrev` จะพัง (zero hash ไม่ใช่ object ที่มีอยู่จริง)
 
-สำหรับ branch ที่**เพิ่งสร้างใหม่** (`oldrev = zero`) เราต้องใช้ `git rev-list "$newrev" --not --all` แทน ซึ่งแปลว่า "เอาทุกคอมมิตที่ไปถึงได้จาก `$newrev` **ยกเว้น** คอมมิตที่ไปถึงได้จาก ref อื่น ๆ ที่มีอยู่แล้วใน repo" — นี่คือวิธีหา "คอมมิตที่ Git server ไม่เคยเห็นมาก่อนเลย" อย่างถูกต้อง ไม่ว่าจะเป็นการสร้าง branch ใหม่จาก branch เก่า (ซึ่งจะไม่มีคอมมิตใหม่เลยถ้ายังไม่ได้ commit เพิ่ม) หรือสร้าง branch แบบไม่มีความเกี่ยวข้องกับอะไรเลย (orphan branch)
+สำหรับ branch ที่**เพิ่งสร้างใหม่** (`oldrev = zero`) เราต้องใช้ `git rev-list --no-merges "$newrev" --not --all` แทน ซึ่งแปลว่า "เอาทุกคอมมิตที่ไปถึงได้จาก `$newrev` **ยกเว้น** คอมมิตที่ไปถึงได้จาก ref อื่น ๆ ที่มีอยู่แล้วใน repo" — นี่คือวิธีหา "คอมมิตที่ Git server ไม่เคยเห็นมาก่อนเลย" อย่างถูกต้อง ไม่ว่าจะเป็นการสร้าง branch ใหม่จาก branch เก่า (ซึ่งจะไม่มีคอมมิตใหม่เลยถ้ายังไม่ได้ commit เพิ่ม) หรือสร้าง branch แบบไม่มีความเกี่ยวข้องกับอะไรเลย (orphan branch)
 
 ### ทดสอบ hook ด้วยสถานการณ์จริง
 
@@ -588,13 +590,13 @@ Server-side Hook                          Webhook
     "full_name": "myorg/myapp"
   },
   "pusher": {
-    "name": "phutjirakul"
+    "name": "somchai-jaidee"
   },
   "commits": [
     {
       "id": "f6e5d4c3b2a1...",
       "message": "feat(checkout): เพิ่มระบบชำระเงินผ่าน QR Code",
-      "author": { "name": "Phutjirakul", "email": "..." }
+      "author": { "name": "Somchai Jaidee", "email": "somchai@example.com" }
     }
   ]
 }
@@ -809,10 +811,12 @@ do
   fi
 
   # กฎที่ 2: ทุกคอมมิตใหม่ต้องตรงรูปแบบ <type>: <description>
+  # ใช้ --no-merges เพราะ merge commit message เป็นข้อความมาตรฐานของ Git เอง
+  # (เช่น "Merge feature/readme into main") ไม่ได้ตั้งใจให้ตรงกับ Conventional Commits
   if [ "$oldrev" = "$zero" ]; then
-    commit_range=$(git rev-list "$newrev" --not --all)
+    commit_range=$(git rev-list --no-merges "$newrev" --not --all)
   else
-    commit_range=$(git rev-list "$oldrev".."$newrev")
+    commit_range=$(git rev-list --no-merges "$oldrev".."$newrev")
   fi
 
   for commit in $commit_range; do

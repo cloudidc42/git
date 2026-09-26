@@ -656,7 +656,7 @@ git subtree push --prefix=libs/shared-utils shared-utils-remote feature/my-fix
 1. แยก (extract) เฉพาะ commit ที่เกี่ยวข้องกับ path `libs/shared-utils` ออกมาจาก history ของ parent repo
 2. Push commit เหล่านั้นไปยัง branch `feature/my-fix` บน remote `shared-utils-remote`
 
-จากนั้นคุณสามารถไปเปิด Pull Request ที่ repo ต้นทางตามปกติ เพื่อขอให้ maintainer ของ repo นั้น merge การแก้ไขของคุณเข้าไปใน main bran+ ทำให้ dependency ต้นทางดีขึ้นสำหรับทุกคนที่ใช้งานร่วมกัน
+จากนั้นคุณสามารถไปเปิด Pull Request ที่ repo ต้นทางตามปกติ เพื่อขอให้ maintainer ของ repo นั้น merge การแก้ไขของคุณเข้าไปใน main branch ทำให้ dependency ต้นทางดีขึ้นสำหรับทุกคนที่ใช้งานร่วมกัน
 
 **ข้อควรระวัง:** `git subtree push` อาจใช้เวลานานพอสมควรในโปรเจกต์ที่มี history ยาว เพราะมันต้องไล่สแกน history ทั้งหมดของ parent repo เพื่อแยก commit ที่เกี่ยวข้องกับ prefix นั้นออกมา
 

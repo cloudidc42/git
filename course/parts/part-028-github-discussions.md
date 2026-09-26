@@ -301,7 +301,7 @@ Poll ใช้ได้กับกระทู้ Discussion ใน **category 
 - ผู้ใช้แต่ละคนโหวตได้ **1 เสียงต่อโพล** (เลือกได้แค่ 1 ตัวเลือกเท่านั้น ไม่รองรับ multiple selection)
 - เมื่อโหวตแล้ว ระบบจะแสดง **แถบเปอร์เซ็นต์ (progress bar)** ของแต่ละตัวเลือกให้เห็นทันที พร้อมจำนวนโหวตรวม
 - **เปลี่ยนใจโหวตใหม่ได้** ตราบใดที่โพลยังไม่ปิด — กดเลือกตัวเลือกอื่นแทนที่ได้ตลอดเวลา
-- โพลจะปิดรับโหวตอัตโนมัติเมื่อครบ **90 วัน** นับจากวันที่สร้าง (นี่คือ fixed limit ของ GitHub ไม่สามารถตั้งเป็นระยะเวลาอื่นได้)
+- โพลของ GitHub **ไม่มีวันหมดอายุอัตโนมัติ** — โพลจะเปิดรับโหวตต่อไปเรื่อย ๆ จนกว่า maintainer จะ **Lock conversation** (ดู Step 278.2) เพื่อหยุดรับโหวต ถ้าต้องการให้โพลมีกำหนดเวลาปิดชัดเจน ต้องระบุไว้ในเนื้อหากระทู้เอง แล้วมา lock ด้วยมือเมื่อถึงกำหนด
 
 ### 275.4 การใช้งาน Poll อย่างมีประสิทธิภาพในทีม
 
@@ -533,15 +533,17 @@ Discussions มีเครื่องมือ moderation ครบชุด�
 
 ที่ผ่านมาทั้งหมดในหลักสูตรนี้พูดถึง Discussions ที่ผูกกับ **repository เดียว** แต่ GitHub ยังมีอีกระดับหนึ่งคือ **Organization Discussions** ซึ่งเป็นพื้นที่พูดคุยที่ไม่ได้ผูกกับ repo ใด repo หนึ่งโดยเฉพาะ แต่เป็นของทั้ง **organization**
 
-จุดสำคัญคือ Organization Discussions **ใช้ repository พิเศษชื่อ `.github`** ของ organization นั้นเป็นที่เก็บข้อมูล กล่าวคือ:
+จุดสำคัญคือ Organization Discussions ต้อง **เลือก repository หนึ่งใน organization ให้เป็น "source repository"** ที่ใช้เก็บข้อมูลของ Discussions ระดับองค์กร กล่าวคือ:
 
-> เมื่อสร้าง repository ชื่อ `.github` ภายใต้ organization แล้วเปิดใช้งาน Discussions ใน repo นั้น Discussions ที่อยู่ใน repo `.github` จะถูกยกระดับให้แสดงผลเป็น **"Discussions ของทั้ง Organization"** ที่เข้าถึงได้จากหน้าโปรไฟล์ organization โดยตรง
+> Owner ของ organization เปิดใช้งาน Organization Discussions ผ่านหน้า Settings ของ organization เอง แล้วเลือก repository ใดก็ได้ในองค์กร (จะสร้างใหม่หรือใช้ repo ที่มีอยู่แล้วก็ได้) ให้เป็น source repository — Discussions ที่อยู่ใน repo นั้นจะถูกยกระดับให้แสดงผลเป็น **"Discussions ของทั้ง Organization"** ที่เข้าถึงได้จากหน้าโปรไฟล์ organization โดยตรง หลายองค์กรนิยมเลือก repo ชื่อ `.github` เป็น source repository เพราะเป็น repo พิเศษที่ใช้เก็บ default community health files อยู่แล้ว แต่ **ไม่ได้บังคับว่าต้องชื่อ `.github` เท่านั้น** — repo อื่นก็ใช้เป็น source ได้เช่นกัน
 
 ### 279.2 วิธีเปิดใช้งาน Organization Discussions
 
-1. สร้าง repository พิเศษชื่อ **`.github`** ภายใต้ organization (ถ้ายังไม่มี) — repo นี้มีสถานะพิเศษอยู่แล้วใน GitHub เพราะใช้เก็บไฟล์ default community health files (เช่น default `CONTRIBUTING.md`, `ISSUE_TEMPLATE` ที่ใช้ร่วมกันทุก repo ในองค์กร)
-2. เปิดใช้งาน **Discussions** ใน repo `.github` นั้นตามขั้นตอนปกติ (เหมือน Step 272)
-3. เมื่อเปิดแล้ว หน้าโปรไฟล์ organization (`github.com/ชื่อorg`) จะมีแท็บ **Discussions** ปรากฏขึ้นในระดับ organization โดยอัตโนมัติ
+1. ไปที่หน้า organization บน GitHub แล้วคลิก **Settings**
+2. ในเมนูด้านซ้ายหมวด **"Code, planning, and automation"** คลิก **Discussions**
+3. คลิก **Enable discussions for this organization**
+4. เลือก repository ที่จะใช้เป็น **source repository** จาก dropdown (สร้าง repo ใหม่ก่อนก็ได้ถ้ายังไม่มี repo ที่เหมาะสม — หลายองค์กรเลือกใช้ repo ชื่อ `.github`)
+5. เมื่อเปิดแล้ว หน้าโปรไฟล์ organization (`github.com/ชื่อorg`) จะมีแท็บ **Discussions** ปรากฏขึ้นในระดับ organization โดยอัตโนมัติ และ Discussions จะแสดงทั้งในหน้า organization และในหน้า Discussions ของ source repository เอง
 
 ### 279.3 ประโยชน์ของ Organization Discussions
 
@@ -556,15 +558,15 @@ Discussions มีเครื่องมือ moderation ครบชุด�
 
 หากทั้ง organization และ repository ย่อยแต่ละอันต่างก็เปิด Discussions ของตัวเองไว้ด้วย ควรวางกฎให้ชัดเจนว่าอะไรควรอยู่ระดับไหน เพื่อไม่ให้ชุมชนสับสนว่าจะไปโพสต์ที่ไหน:
 
-- **ระดับ Organization (`.github` repo):** เรื่องภาพรวม, roadmap รวม, ประกาศข้ามทีม, คำถามที่ไม่รู้ว่าเกี่ยวกับ repo ไหน
+- **ระดับ Organization (source repository):** เรื่องภาพรวม, roadmap รวม, ประกาศข้ามทีม, คำถามที่ไม่รู้ว่าเกี่ยวกับ repo ไหน
 - **ระดับ Repository:** คำถามเจาะจงเกี่ยวกับการใช้งาน library/tool นั้น ๆ โดยตรง, บั๊กเฉพาะ repo, ไอเดียเฉพาะฟีเจอร์ของ repo นั้น
 
 ควรเขียนคำอธิบายนี้ไว้ใน pinned welcome post ทั้งสองระดับ เพื่อชี้ทางให้ผู้ใช้ไปโพสต์ถูกที่ตั้งแต่แรก
 
 ### 279.5 ข้อจำกัดของ Organization Discussions
 
-- ต้องมีสิทธิ์ระดับ **Owner ของ organization** หรือได้รับมอบสิทธิ์ Admin ของ repo `.github` จึงจะตั้งค่า category และ moderation ระดับ organization ได้
-- Organization Discussions ใช้ category และการตั้งค่าของตัว repo `.github` เอง — ไม่ได้ผสานรวม category จาก repo อื่น ๆ ในองค์กรเข้าด้วยกันอัตโนมัติ
+- ต้องมีสิทธิ์ระดับ **Owner ของ organization** จึงจะเปิด/ปิดใช้งาน Organization Discussions และเปลี่ยน source repository ได้ ส่วนสิทธิ์ในการสร้าง/ตอบ/ดูแลกระทู้จะอิงตามสิทธิ์ที่มีใน source repository นั้น (เหมือน Discussions ของ repository ทั่วไป)
+- Organization Discussions ใช้ category และการตั้งค่าของตัว source repository เอง — ไม่ได้ผสานรวม category จาก repo อื่น ๆ ในองค์กรเข้าด้วยกันอัตโนมัติ
 - ฟีเจอร์นี้ต้องการให้ organization เปิดให้ repo เป็น public หรือมีแผนที่รองรับ (บาง feature ของ community health file ระดับ org ขึ้นกับแผนบัญชีขององค์กรด้วย)
 
 ---
@@ -666,10 +668,10 @@ cd discussions-practice
 2. Discussions ต้อง **เปิดใช้งานเองใน repo settings** เพราะไม่ได้เปิดเป็นค่าเริ่มต้นเหมือน Issues
 3. **Categories** กำหนดทั้งการจัดกลุ่มและ **รูปแบบการสนทนา** (Open-ended, Question/Answer, Announcement) โดยมี 5 หมวดเริ่มต้นและสร้างเพิ่มเองได้
 4. หมวด **Q&A** มีกลไก **Mark as answer** ที่ช่วยสร้างฐานความรู้ (knowledge base) ที่ค้นหาได้ในระยะยาว
-5. **Polls** ช่วยสำรวจความเห็นแบบเลือกตอบได้โดยตรงในกระทู้ โดยจำกัด 1 โหวตต่อคนและปิดอัตโนมัติภายใน 90 วัน
+5. **Polls** ช่วยสำรวจความเห็นแบบเลือกตอบได้โดยตรงในกระทู้ โดยจำกัด 1 โหวตต่อคน และไม่มีวันหมดอายุอัตโนมัติ — ต้อง Lock conversation เองเมื่อต้องการหยุดรับโหวต
 6. **Issue และ Discussion แปลงข้ามกันได้** แต่มีทิศทางที่ไม่สมมาตรกัน — Issue → Discussion จะปิด Issue เดิมถาวร ส่วน Discussion → Issue จะไม่ลบ Discussion เดิม
 7. การสร้าง **community** ที่ดีต้องมี pinned welcome post, guidelines ที่ชัดเจน และ maintainer ที่ดูแลตอบกระทู้อย่างสม่ำเสมอ
 8. เครื่องมือ **Moderation** ได้แก่ Pin, Lock, Delete, Transfer, และ Hide comment แต่ละอันมีระดับความย้อนกลับได้ต่างกัน โดยเฉพาะ Delete ที่ย้อนกลับไม่ได้เลย
-9. **Organization Discussions** ทำได้โดยเปิดใช้งาน Discussions ใน repository พิเศษชื่อ `.github` ขององค์กร เพื่อรวมศูนย์การพูดคุยระดับองค์กรทั้งหมด
+9. **Organization Discussions** เปิดใช้งานผ่าน Settings ของ organization โดยเลือก repository หนึ่งในองค์กรเป็น source repository (นิยมใช้ `.github` แต่ไม่บังคับ) เพื่อรวมศูนย์การพูดคุยระดับองค์กรทั้งหมด
 
 **ต่อไป:** [Part 29: GitHub Search และการค้นหาโค้ด/โปรเจกต์อย่างมีประสิทธิภาพ](./part-029-github-search.md)

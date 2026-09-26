@@ -1228,9 +1228,8 @@ coverage/
 logs/*
 !logs/important.log
 
-# ===== Editor: VS Code (แชร์บางไฟล์ ไม่แชร์ทั้งหมด) =====
-.vscode/*
-!.vscode/settings.json
+# ===== Editor: VS Code (ทีมนี้เลือกไม่แชร์การตั้งค่า VS Code เลย) =====
+.vscode/
 
 # ===== OS-specific =====
 .DS_Store
@@ -1247,11 +1246,11 @@ git check-ignore -v node_modules/express/index.js dist/bundle.js .env logs/error
 **ผลลัพธ์:**
 ```
 .gitignore:2:node_modules/	node_modules/express/index.js
-.gitignore:6:dist/	dist/bundle.js
+.gitignore:5:dist/	dist/bundle.js
 .gitignore:12:.env	.env
 .gitignore:17:logs/*	logs/error.log
 .gitignore:18:!logs/important.log	logs/important.log
-.gitignore:23:.DS_Store	.DS_Store
+.gitignore:24:.DS_Store	.DS_Store
 ```
 
 สังเกตว่า `app.js` ไม่ปรากฏในผลลัพธ์เลย (เพราะไม่ถูก ignore ตามที่ตั้งใจ) และ `logs/important.log` ปรากฏพร้อมเครื่องหมาย `!` (แปลว่า negation ทำงานถูกต้อง ไฟล์นี้จะไม่ถูก ignore)

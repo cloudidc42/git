@@ -103,7 +103,7 @@ GitHub แนะนำ Ed25519 อย่างเป็นทางการเ�
 เปิด Terminal แล้วรันคำสั่ง:
 
 ```bash
-ssh-keygen -t ed25519 -C "phutjirakul.iam@gmail.com"
+ssh-keygen -t ed25519 -C "somchai@example.com"
 ```
 
 อธิบายแต่ละส่วนของคำสั่ง:
@@ -134,7 +134,7 @@ Enter same passphrase again:
 Your identification has been saved in /home/user/.ssh/id_ed25519
 Your public key has been saved in /home/user/.ssh/id_ed25519.pub
 The key fingerprint is:
-SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx phutjirakul.iam@gmail.com
+SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx somchai@example.com
 The key's randomart image is:
 +--[ED25519 256]--+
 |      .o+o..     |
@@ -180,7 +180,7 @@ cat ~/.ssh/id_ed25519.pub
 จะได้ข้อความยาวประมาณนี้ (ตัวอย่าง):
 
 ```
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX phutjirakul.iam@gmail.com
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX somchai@example.com
 ```
 
 นี่คือ public key ที่เราจะนำไปฝากไว้ที่ GitHub ใน Step 174 **อย่าพยายามดูเนื้อหาไฟล์ `id_ed25519` (ไม่มีนามสกุล .pub) เด็ดขาด และไม่ต้องส่งให้ใครดูเลย** เพราะนั่นคือ private key
@@ -224,7 +224,7 @@ ssh-add ~/.ssh/id_ed25519
 
 ```
 Enter passphrase for /home/user/.ssh/id_ed25519:
-Identity added: /home/user/.ssh/id_ed25519 (phutjirakul.iam@gmail.com)
+Identity added: /home/user/.ssh/id_ed25519 (somchai@example.com)
 ```
 
 หลังจากขั้นตอนนี้ ตราบใดที่ ssh-agent ยัง run อยู่ (โดยทั่วไปคือจนกว่าจะปิด terminal session หรือรีสตาร์ทเครื่อง) คุณจะไม่ต้องพิมพ์ passphrase ซ้ำอีก
@@ -238,7 +238,7 @@ ssh-add -l
 จะเห็นรายการ key ที่ agent จำอยู่ พร้อม fingerprint:
 
 ```
-256 SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx phutjirakul.iam@gmail.com (ED25519)
+256 SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx somchai@example.com (ED25519)
 ```
 
 ถ้าต้องการดูรายการแบบเต็ม (fingerprint + randomart) ใช้:
@@ -412,10 +412,10 @@ Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
 ### ผลลัพธ์เมื่อเชื่อมต่อสำเร็จ
 
 ```
-Hi phutjirakul-iam! You've successfully authenticated, but GitHub does not provide shell access.
+Hi somchai-dev! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
-ข้อความนี้คือสัญญาณว่า **การตั้งค่า SSH ของคุณสำเร็จสมบูรณ์แล้ว** สังเกตว่าชื่อ `phutjirakul-iam` คือ username GitHub ของคุณที่ผูกกับ key นี้ ส่วนข้อความ "does not provide shell access" เป็นเรื่องปกติ เพราะ GitHub ไม่ได้ให้เข้าใช้ shell จริง ๆ เพียงแค่ใช้ SSH protocol สำหรับยืนยันตัวตนและรับส่งข้อมูล Git เท่านั้น
+ข้อความนี้คือสัญญาณว่า **การตั้งค่า SSH ของคุณสำเร็จสมบูรณ์แล้ว** สังเกตว่าชื่อ `somchai-dev` คือ username GitHub ของคุณที่ผูกกับ key นี้ ส่วนข้อความ "does not provide shell access" เป็นเรื่องปกติ เพราะ GitHub ไม่ได้ให้เข้าใช้ shell จริง ๆ เพียงแค่ใช้ SSH protocol สำหรับยืนยันตัวตนและรับส่งข้อมูล Git เท่านั้น
 
 ### ถ้าเชื่อมต่อไม่สำเร็จ ควรทำอย่างไร
 
@@ -789,7 +789,7 @@ ls -la ~/.ssh/
 ### ขั้นที่ 2: สร้าง SSH key ใหม่ (ถ้ายังไม่มี)
 
 ```bash
-ssh-keygen -t ed25519 -C "phutjirakul.iam@gmail.com"
+ssh-keygen -t ed25519 -C "somchai@example.com"
 ```
 
 กด Enter เพื่อใช้ path เริ่มต้น แล้วตั้ง passphrase ที่จำได้และปลอดภัย
@@ -832,7 +832,7 @@ ssh -T git@github.com
 ควรได้ผลลัพธ์ทำนอง:
 
 ```
-Hi phutjirakul-iam! You've successfully authenticated, but GitHub does not provide shell access.
+Hi somchai-dev! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
 ถ้ายังไม่สำเร็จ ย้อนกลับไปดูตารางแก้ปัญหาใน Step 175 ก่อนไปขั้นตอนถัดไป
@@ -851,7 +851,7 @@ Hi phutjirakul-iam! You've successfully authenticated, but GitHub does not provi
 
 ```bash
 cd ~/git-course
-git clone git@github.com:phutjirakul-iam/ssh-practice-part18.git
+git clone git@github.com:somchai-dev/ssh-practice-part18.git
 cd ssh-practice-part18
 ```
 

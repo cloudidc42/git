@@ -1002,7 +1002,7 @@ git fetch origin
 ผลลัพธ์:
 
 ```
-From /home/user/git-course/part-09-remote/remote-project
+From /home/user/git-course/part-09-remote/remote-project.git
    a1b2c3d..f4e5d6c  main       -> origin/main
 ```
 

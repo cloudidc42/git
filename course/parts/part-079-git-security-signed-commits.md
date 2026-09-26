@@ -486,7 +486,7 @@ git log --show-signature -1
 
 ```
 commit f6e5d4c3b2a1...
-Good "git" signature with ED25519 key SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Good "git" signature for somchai@example.com with ED25519 key SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Author: Somchai Jaidee <somchai@example.com>
 Date:   Sat Sep 26 10:15:00 2026 +0700
 
@@ -812,7 +812,7 @@ git commit -m "เพิ่ม README พร้อม SSH signing"
 git log --show-signature -1
 ```
 
-ควรเห็นบรรทัด `Good "git" signature with ED25519 key SHA256:...`
+ควรเห็นบรรทัด `Good "git" signature for somchai@example.com with ED25519 key SHA256:...`
 
 ### ขั้นตอนที่ 6: สร้าง repository บน GitHub แล้ว push ขึ้นจริง
 

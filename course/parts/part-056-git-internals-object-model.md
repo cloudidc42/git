@@ -211,11 +211,11 @@ blob <ขนาดเนื้อหาเป็นไบต์ในเลข�
 
 โดย `\0` คือ null byte (ไบต์ค่า 0) ใช้เป็นตัวคั่นระหว่าง header กับเนื้อหา
 
-ตัวอย่างถ้าไฟล์ `hello.txt` มีเนื้อหา `Hello Git Internals\n` (21 ไบต์รวม newline):
+ตัวอย่างถ้าไฟล์ `hello.txt` มีเนื้อหา `Hello Git Internals\n` (20 ไบต์รวม newline):
 
 ```
 สิ่งที่ถูกนำไปคำนวณ hash จริง ๆ คือสตริง:
-"blob 21\0Hello Git Internals\n"
+"blob 20\0Hello Git Internals\n"
 ```
 
 จากนั้น Git จะ:
@@ -638,7 +638,7 @@ Step นี้เป็นการแนะนำเครื่องมือ
 | Flag | ทำอะไร | ตัวอย่าง |
 |---|---|---|
 | `-t` | บอก**ประเภท** (type) ของ object | `git cat-file -t 6b584e8` → `blob` |
-| `-s` | บอก**ขนาด** (size) ของเนื้อหา object เป็นไบต์ (ไม่รวม header) | `git cat-file -s 6b584e8` → `21` |
+| `-s` | บอก**ขนาด** (size) ของเนื้อหา object เป็นไบต์ (ไม่รวม header) | `git cat-file -s 6b584e8` → `20` |
 | `-p` | **Pretty-print** — แสดงเนื้อหาแบบอ่านง่ายตามประเภทของ object นั้น | `git cat-file -p 6b584e8` → เนื้อหาไฟล์จริง |
 
 ลองไล่ทั้งสามคำสั่งกับ hash เดียวกัน:
@@ -648,7 +648,7 @@ git cat-file -t 6b584e8ece562ebffc15d38808cd6b98fc3d97e
 # blob
 
 git cat-file -s 6b584e8ece562ebffc15d38808cd6b98fc3d97e
-# 21
+# 20
 
 git cat-file -p 6b584e8ece562ebffc15d38808cd6b98fc3d97e
 # Hello Git Internals

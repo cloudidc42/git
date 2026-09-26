@@ -476,7 +476,7 @@ Organization secret (กว้างที่สุด)
 3. เพิ่มรายชื่อผู้ใช้หรือทีม (สูงสุด 6 คน/ทีมต่อ environment)
 4. กด **Save protection rules**
 
-> **หมายเหตุ:** ผู้ที่จะ push โค้ดที่ trigger workflow นั้น **ไม่สามารถอนุมัติ deployment ของตัวเองได้** (ถ้าเป็นคนเดียวในรายชื่อ reviewer และเป็นคน trigger ด้วย) เพื่อป้องกันการ self-approve ที่ขาดการตรวจสอบจากบุคคลที่สาม — ต้องมี reviewer อื่นอย่างน้อย 1 คนกดอนุมัติแทน
+> **หมายเหตุ:** โดย default แล้ว GitHub **อนุญาต** ให้ผู้ที่ push โค้ดที่ trigger workflow นั้นกดอนุมัติ deployment ของตัวเองได้ ถ้าต้องการป้องกันการ self-approve ที่ขาดการตรวจสอบจากบุคคลที่สาม ต้องเปิดใช้ตัวเลือก **"Prevent self-review"** เพิ่มเติมเองใน protection rules ของ environment นั้น (ตัวเลือกนี้ปิดอยู่เป็นค่าเริ่มต้น ไม่ได้เปิดให้อัตโนมัติ) เมื่อเปิดแล้วคนที่ trigger workflow (แม้จะอยู่ในรายชื่อ reviewer) จะต้องรอ reviewer คนอื่นกดอนุมัติแทนเสมอ
 
 ### ตัวอย่าง Workflow ที่มี Environment Approval
 

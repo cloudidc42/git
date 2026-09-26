@@ -1,7 +1,7 @@
 # Part 30: โปรเจกต์ฝึกหัด: Contribute ให้โปรเจกต์ Open Source จริง
 
 > **Step ในหลักสูตรนี้:** Step 291–300
-> **เฟส:** 3 — GitHub เบื้องต้น (Part นี้คือ Part สุดท้ายของเฟส 3)
+> **เฟส:** 3 — ใช้งาน GitHub อย่างมืออาชีพ ทำ Pull Request, Code Review, Open Source (Part นี้คือ Part สุดท้ายของเฟส 3)
 > **เป้าหมายของ Part นี้:** นำทุกทักษะที่เรียนมาตั้งแต่ Part 16 ถึง Part 29 มาใช้งานจริงในภารกิจเดียวที่ครบวงจรที่สุดของเฟส 3 — ตั้งแต่การสมัครบัญชี GitHub, ตั้งค่า SSH, เขียน README, เปิด Issue, ทำ Pull Request, รับ Code Review, ใช้ GitHub Projects, Fork repository, ใช้ GitHub Pages, จัดการ Labels/Milestones/Templates, เขียน Wiki, พูดคุยใน Discussions ไปจนถึงการค้นหาด้วย GitHub Search โดยนำทั้งหมดมาประยุกต์ใช้กับการ **contribute ให้โปรเจกต์ Open Source จริงบนโลกใบนี้** ตั้งแต่การเลือกโปรเจกต์ อ่านกติกา Fork/Clone/ตั้งค่า upstream ลงมือแก้โค้ด เขียน PR ที่มีคุณภาพ รับมือกับ Code Review จริงจาก maintainer ไปจนถึงการทบทวนภาพรวมทั้งเฟส 3 ก่อนก้าวเข้าสู่เฟส 4
 
 ---
@@ -761,11 +761,13 @@ git switch feature/510-add-formatdate-test
 ```bash
 cat >> src/utils/formatDate.test.js << 'EOF'
 
-  it("returns 'Invalid Date' string for an unparsable input", () => {
-    expect(formatDate("not-a-date")).toBe("Invalid Date");
+  it("does not throw an unhandled exception for an unparsable input", () => {
+    expect(() => formatDate("not-a-date")).not.toThrow();
   });
 EOF
 ```
+
+> **หมายเหตุ:** สังเกตว่า test นี้ตรวจแค่ว่าฟังก์ชัน**ไม่ throw exception** ตามที่ maintainer ขอเป๊ะ ๆ — ไม่ได้ไป assert ค่าที่ return ออกมาตรง ๆ เพราะ `formatDate()` เวอร์ชันปัจจุบันยังไม่ได้เขียนโค้ดจัดการ invalid date เป็นพิเศษ (เมื่อ `new Date()` แปลงค่าไม่ได้ จะได้ `NaN` แล้ว template string ก็ยังคืนค่าออกมาเป็น string ปกติโดยไม่ throw) การเขียน test ให้ตรงกับพฤติกรรมจริงของโค้ด แทนที่จะเดาผลลัพธ์เอาเอง เป็นนิสัยสำคัญที่ควรฝึกไว้เสมอ
 
 รัน test ซ้ำเพื่อยืนยันว่าผ่านก่อน commit:
 
@@ -778,7 +780,7 @@ PASS  src/utils/formatDate.test.js
   formatDate
     ✓ formats a date as DD/MM/YYYY (2 ms)
     ✓ pads single-digit day and month with zero (1 ms)
-    ✓ returns 'Invalid Date' string for an unparsable input (1 ms)
+    ✓ does not throw an unhandled exception for an unparsable input (1 ms)
 ```
 
 ### 298.3 Commit เพิ่มเข้า branch เดิม (ไม่สร้าง branch ใหม่)

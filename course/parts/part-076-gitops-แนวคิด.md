@@ -638,7 +638,7 @@ spec:
 
 ### ความท้าทายที่ 3: การจัดการ Order/Dependency ระหว่าง Resource
 
-บางครั้งการ deploy มี resource ที่ต้องพึ่งพากันตามลำดับ (เช่น ต้องสร้าง database schema ก่อนที่ application จะ start ได้) การจัดการลำดับการ apply ใน GitOps agent (เช่นการใช้ sync wave ใน ArgoCด หรือ dependsOn ใน Flux) มีความซับซ้อนกว่าการเขียน script แบบ step-by-step ตรง ๆ
+บางครั้งการ deploy มี resource ที่ต้องพึ่งพากันตามลำดับ (เช่น ต้องสร้าง database schema ก่อนที่ application จะ start ได้) การจัดการลำดับการ apply ใน GitOps agent (เช่นการใช้ sync wave ใน ArgoCD หรือ dependsOn ใน Flux) มีความซับซ้อนกว่าการเขียน script แบบ step-by-step ตรง ๆ
 
 ### ความท้าทายที่ 4: Drift ที่เกิดจากภายนอกระบบ Kubernetes เอง
 
