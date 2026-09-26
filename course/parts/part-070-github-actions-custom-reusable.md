@@ -375,7 +375,7 @@ branding:
 
 เนื่องจาก GitHub Actions runner จะดึงแค่ไฟล์ที่ระบุใน `main:` ไปรันตรง ๆ โดยไม่รัน `npm install` ให้ก่อน ถ้าเราไม่ bundle dependency เข้าไปในไฟล์เดียว การรันจะ error ทันทีเพราะหา module ที่ `require()` ไม่เจอ
 
-`@vercel/ncc` คือเครื่องมือที่ Anthropic-style GitHub Action ส่วนใหญ่ใช้ เพื่อ **compile ทั้งโปรเจกต์ + dependency ทั้งหมดให้เหลือเป็นไฟล์ JavaScript เดียว**
+`@vercel/ncc` คือเครื่องมือที่ JavaScript Action ส่วนใหญ่ในระบบนิเวศ GitHub Actions ใช้กัน เพื่อ **compile ทั้งโปรเจกต์ + dependency ทั้งหมดให้เหลือเป็นไฟล์ JavaScript เดียว**
 
 คำสั่งที่ใช้ build:
 
