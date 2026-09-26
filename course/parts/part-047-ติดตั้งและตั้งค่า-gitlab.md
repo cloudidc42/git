@@ -264,7 +264,7 @@ Part 18 ของหลักสูตรนี้สอนการสร้า
 ### 465.2 สร้าง SSH key ใหม่สำหรับ GitLab (ถ้าต้องการแยก)
 
 ```bash
-ssh-keygen -t ed25519 -C "phutjirakul.iam@gmail.com" -f ~/.ssh/id_ed25519_gitlab
+ssh-keygen -t ed25519 -C "somchai@example.com" -f ~/.ssh/id_ed25519_gitlab
 ```
 
 คำสั่งนี้เหมือนกับที่อธิบายไว้ใน Step 172 ของ Part 18 ทุกประการ เพียงระบุ `-f` เพื่อตั้งชื่อไฟล์แยกไม่ให้ทับ key เดิมที่ใช้กับ GitHub
@@ -429,10 +429,16 @@ winget install GLab.GLab
 scoop install glab
 ```
 
-**Linux (Debian/Ubuntu ผ่าน apt repository ทางการ):**
+**Linux (สคริปต์ติดตั้งอย่างเป็นทางการ ติดตั้ง binary ให้ทันทีในคำสั่งเดียว ไม่ต้องต่อด้วย apt):**
 
 ```bash
 curl -s https://gitlab.com/gitlab-org/cli/-/raw/main/scripts/install.sh | sudo bash
+```
+
+**Linux (Debian/Ubuntu ผ่าน apt โดยใช้ community repository อย่าง WakeMeOps):**
+
+```bash
+curl -sSL "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | sudo bash
 sudo apt install glab
 ```
 

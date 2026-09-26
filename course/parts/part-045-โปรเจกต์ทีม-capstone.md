@@ -1265,7 +1265,7 @@ git push origin v1.0.1
 
 ### 448.1 เตรียม test script สำหรับตรวจสอบอัตโนมัติ
 
-ในสถานการณ์จริง เราอยากให้ Git หาต้นเหตุให้อัตโนมัติแทนที่จะเช็คเองทีละ commit เราจึงเขียน script ตรวจสอบง่าย ๆ ที่ตรวจว่าไฟล์ `frontend/js/app.js` ยังมี guard clause ที่ปลอดภัยอยู่หรือไม่ (ในสถานการณ์จริงคุณอาจรัน automated test จริงแทน แต่หลักการเดียวกัน — script ต้อง exit 0 เมื่อ "ดี" และ exit ไม่ใช่ 0 เมื่อ "แย่"):
+ในสถานการณ์จริง เราอยากให้ Git หาต้นเหตุให้อัตโนมัติแทนที่จะเช็คเองทีละ commit เราจึงเขียน script ตรวจสอบง่าย ๆ ที่ตรวจว่าฟังก์ชัน `updateCartBadge` ใน `frontend/js/app.js` มีการเช็ค `null` ป้องกัน element ที่ยังไม่ถูกสร้างหรือไม่ (ในสถานการณ์จริงคุณอาจรัน automated test จริงแทน แต่หลักการเดียวกัน — script ต้อง exit 0 เมื่อ "ดี" และ exit ไม่ใช่ 0 เมื่อ "แย่"):
 
 ```bash
 cd ~/git-course/teamcommerce-team/weera
@@ -1274,17 +1274,22 @@ git pull origin main
 
 cat > check-render-guard.sh << 'EOF'
 #!/bin/sh
-# ตรวจสอบว่าฟังก์ชัน renderProducts ยังมี guard clause ตรวจสอบ products ครบถ้วนหรือไม่
-if grep -q "Array.isArray(products)" frontend/js/app.js; then
-  exit 0   # ดี: guard clause ยังอยู่ครบ
+# ตรวจสอบว่าฟังก์ชัน updateCartBadge มี null check ป้องกัน element ที่ยังไม่พร้อมหรือไม่
+if grep -q "function updateCartBadge" frontend/js/app.js; then
+  # ฟังก์ชันนี้มีอยู่แล้ว ณ commit นี้ — เช็คต่อว่ามี guard กันค่า null หรือยัง
+  if grep -A2 "function updateCartBadge" frontend/js/app.js | grep -q "if (!badge)"; then
+    exit 0   # ดี: มี null check ป้องกันแล้ว
+  else
+    exit 1   # แย่: เรียก getElementById ตรง ๆ โดยไม่เช็ค null ก่อน เสี่ยง TypeError
+  fi
 else
-  exit 1   # แย่: guard clause หายไปหรือถูกแก้ไขผิดพลาด
+  exit 0   # ฟังก์ชันนี้ยังไม่ถูกสร้างขึ้น ณ จุดนี้ของประวัติ ยังไม่ถือว่ามีบั๊ก
 fi
 EOF
 chmod +x check-render-guard.sh
 ```
 
-> **หมายเหตุ:** นี่คือการจำลอง automated test อย่างง่ายที่สุดเท่าที่จะทำได้เพื่อให้ `git bisect run` ทำงานได้โดยไม่ต้องพึ่ง test framework จริง ในการทำงานจริงคุณจะเขียน unit test จริง ๆ (เช่นด้วย Jest หรือ Mocha) แล้วให้ `git bisect run npm test` แทน — หลักการที่ `git bisect` ใช้เหมือนกันทุกประการไม่ว่า test จะซับซ้อนแค่ไหน
+> **หมายเหตุ:** นี่คือการจำลอง automated test อย่างง่ายที่สุดเท่าที่จะทำได้เพื่อให้ `git bisect run` ทำงานได้โดยไม่ต้องพึ่ง test framework จริง ในการทำงานจริงคุณจะเขียน unit test จริง ๆ (เช่นด้วย Jest หรือ Mocha) แล้วให้ `git bisect run npm test` แทน — หลักการที่ `git bisect` ใช้เหมือนกันทุกประการไม่ว่า test จะซับซ้อนแค่ไหน สังเกตว่า script นี้ต้องตรวจสอบ **อาการของบั๊กจริง ๆ** (การเรียก `getElementById` โดยไม่เช็ค null) ไม่ใช่ตรวจสิ่งที่ไม่เกี่ยวข้อง — ถ้าเขียน script ผิดจุดจนตรวจสอบสิ่งที่ไม่ได้เปลี่ยนแปลงไปตามบั๊กจริง `git bisect run` จะรายงานผลลัพธ์ผิดพลาดไปเลย (เช่น ชี้ไปที่ commit อื่นที่ไม่เกี่ยวข้อง) — นี่คือเหตุผลที่ควร sanity check script กับจุดที่รู้อยู่แล้วว่า good/bad ก่อนปล่อยให้ `bisect run` ทำงานเต็มรูปแบบเสมอ ตามที่เรียนใน Part 42
 
 ### 448.2 เริ่ม bisect
 
@@ -1295,11 +1300,11 @@ git bisect good v1.0.0
 ```
 
 ```
-Bisecting: 4 revisions left to test after this (roughly 2 steps)
-[6f7a8b9] Merge branch 'feature/frontend-search-bar' into main
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[8b9c0d1] เพิ่มไอคอนตะกร้าสินค้าพร้อมตัวเลขจำนวนใน header
 ```
 
-Git กระโดดไปกึ่งกลางระหว่าง `v1.0.0` กับ `HEAD` ให้อัตโนมัติ
+Git กระโดดไปกึ่งกลางระหว่าง `v1.0.0` กับ `HEAD` ให้อัตโนมัติ (มี 6 commit ทั้งหมดในช่วงนี้ กึ่งกลางจึงตกที่ commit ตัวที่ 3 พอดี)
 
 ### 448.3 รันแบบอัตโนมัติด้วย git bisect run
 
@@ -1311,14 +1316,8 @@ git bisect run ./check-render-guard.sh
 
 ```
 running ./check-render-guard.sh
-Bisecting: 2 revisions left to test after this (roughly 1 step)
-[4d5e6f7] Merge branch 'feature/backend-cart-api' into main
-running ./check-render-guard.sh
-Bisecting: 0 revisions left to test after this (roughly 0 steps)
-[9c0d1e2] Merge branch 'feature/frontend-cart-badge' into main
-running ./check-render-guard.sh
-Bisecting: 0 revisions left to test after this (roughly 0 steps)
-[8b9c0d1] เพิ่มไอคอนตะกร้าสินค้าพร้อมตัวเลขจำนวนใน header
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[6f7a8b9] Merge branch 'feature/frontend-search-bar' into main
 running ./check-render-guard.sh
 8b9c0d1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a is the first bad commit
 commit 8b9c0d1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a
@@ -1327,13 +1326,13 @@ Date:   ...
 
     เพิ่มไอคอนตะกร้าสินค้าพร้อมตัวเลขจำนวนใน header
 
- frontend/index.html | 3 ++-
- frontend/js/app.js   | 5 +++++
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ frontend/index.html | 1 +
+ frontend/js/app.js  | 4 ++++
+ 2 files changed, 5 insertions(+)
 bisect found first bad commit
 ```
 
-**พบต้นเหตุแล้ว: commit `8b9c0d1`** — นี่คือ commit ผลลัพธ์จากการ rebase แก้ conflict ของมานีใน Step 446 นั่นเอง! `git bisect` ทำหน้าที่ของมันได้อย่างแม่นยำ ไล่ทดสอบทีละครึ่งจากทั้งหมด 6 commit ที่อยู่ระหว่าง `v1.0.0` กับ `HEAD` โดยใช้เวลาทดสอบแค่ 4 ครั้งเท่านั้น (log2 ของจำนวน commit) แทนที่จะต้องเช็คทีละตัวถึง 6 ครั้ง
+**พบต้นเหตุแล้ว: commit `8b9c0d1`** — นี่คือ commit ผลลัพธ์จากการ rebase แก้ conflict ของมานีใน Step 446 นั่นเอง! `git bisect run` ทดสอบแค่ **2 ครั้งเท่านั้น** (ทดสอบที่ commit กึ่งกลางแล้วได้ผล "แย่" ทันที ตัดครึ่งบนทิ้งได้เลย จากนั้นทดสอบ commit ก่อนหน้าอีกทีเพื่อยืนยันว่า "ดี") ก็สรุปได้แล้วว่า `8b9c0d1` คือ first bad commit จากทั้งหมด 6 commit ที่อยู่ระหว่าง `v1.0.0` กับ `HEAD` — นี่คือพลังของ binary search ที่เรียนไปใน Part 42 นั่นเอง (log₂(6) ≈ 2.58 จึงใช้แค่ 2-3 ครั้งเป็นไปตามคาด ไม่ใช่ไล่เช็คทีละตัวถึง 6 ครั้ง)
 
 ### 448.4 ออกจากโหมด bisect
 
@@ -1390,9 +1389,9 @@ git blame -L 10,12 frontend/js/app.js
 ```
 
 ```
-8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 10)
-8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 11) function updateCartBadge(count) {
-8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 12)   document.getElementById("cart-badge").textContent = String(count);
+8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 10) function updateCartBadge(count) {
+8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 11)   document.getElementById("cart-badge").textContent = String(count);
+8b9c0d1c (Manee Suksan 2026-08-05 14:32:10 +0700 12) }
 ```
 
 `git blame` ยืนยันตรงกับผลของ `git bisect` เป๊ะ: commit `8b9c0d1` โดยมานี วันที่ 5 สิงหาคม — ตรงกับตอนที่เธอ rebase แก้ conflict ใน Step 446 ทุกประการ
@@ -1416,7 +1415,7 @@ diff --git a/frontend/js/app.js b/frontend/js/app.js
 index 1234567..89abcde 100644
 --- a/frontend/js/app.js
 +++ b/frontend/js/app.js
-@@ -5,3 +5,8 @@ function renderProducts(products) {
+@@ -6,3 +6,7 @@ function renderProducts(products) {
      .map((p) => `<div class="product-card">${p.name} - ${p.price} บาท</div>`)
      .join("");
  }

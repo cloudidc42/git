@@ -72,7 +72,7 @@ GitLab มีระดับการมองเห็นที่ละเอ�
 | **Internal** | ผู้ใช้ที่ล็อกอินเข้า GitLab instance นั้นทุกคนเห็นได้ (มีประโยชน์มากในองค์กรที่ self-host GitLab เพราะพนักงานทุกคนดูโค้ดกันเองได้โดยไม่ต้องเชิญทีละคน — **GitHub ไม่มีระดับนี้**) |
 | **Public** | ใครก็ได้บนอินเทอร์เน็ตเห็นได้ แม้ไม่ได้ล็อกอิน (เทียบเท่า Public repo ของ GitHub) |
 
-> **หมายเหตุ:** บน gitlab.com (SaaS) ระดับ Internal อาจถูกจำกัดหรือปิดใช้งานในบาง instance ด้วยเหตุผลด้านความปลอดภัย แต่ใน self-hosted GitLab (GitLab Self-Managed) ระดับ Internal ยังเป็นค่าที่นิยมใช้มากในองค์กร
+> **หมายเหตุ:** ตั้งแต่ปี 2019 เป็นต้นมา gitlab.com (SaaS) **ปิดการเลือกระดับ Internal สำหรับ project/group ที่สร้างใหม่** ไปแล้ว (เพราะบน SaaS ที่เปิดให้สมัครสมาชิกได้อิสระ คำว่า "Internal" อาจทำให้เข้าใจผิดว่าปลอดภัยกว่าความเป็นจริง) โปรเจกต์เก่าที่เคยตั้งเป็น Internal ไว้ก่อนหน้านั้นยังคงใช้ค่าเดิมได้ แต่จะเปลี่ยนกลับไปเป็น Internal อีกไม่ได้ถ้าเปลี่ยนออกไปแล้ว ส่วนใน self-hosted GitLab (GitLab Self-Managed) ระดับ Internal ยังเลือกใช้งานได้ตามปกติและเป็นค่าที่นิยมใช้มากในองค์กร
 
 ### 471.4 โครงสร้าง Namespace ของ GitLab
 
@@ -467,7 +467,7 @@ GitHub เรียกกลไกนี้ว่า **"Required reviewers"** �
 | Merge Method | พฤติกรรม |
 |---|---|
 | **Merge commit** (ค่าเริ่มต้น) | สร้าง merge commit เสมอ แม้ว่า source branch จะ fast-forward ได้พอดีก็ตาม ประวัติจะเห็นจุดแตกและจุดรวมของ branch ชัดเจน |
-| **Merge commit with semi-linear history** | ถ้า source branch สามารถ fast-forward ได้ทันที จะทำแบบนั้น แต่ถ้า target branch มีการเปลี่ยนแปลงใหม่กว่า จะ**บังคับให้ rebase source branch ก่อน** แล้วค่อยสร้าง merge commit — ทำให้ประวัติดูสะอาดกว่าแบบแรกแต่ยังคงมี merge commit ปรากฏให้เห็นจุดรวมของงาน |
+| **Merge commit with semi-linear history** | **สร้าง merge commit เสมอทุกครั้ง** (เหมือนกับ Merge commit) แต่มีเงื่อนไขเพิ่มว่า**จะยอมให้กด merge ได้ก็ต่อเมื่อ source branch สามารถ fast-forward เข้ากับ target branch ได้แล้วเท่านั้น** ถ้า target branch มีการเปลี่ยนแปลงใหม่กว่าจนไม่สามารถ fast-forward ได้ ผู้ใช้ต้อง**rebase source branch ก่อน**ถึงจะกด merge ได้ — ทำให้มั่นใจได้ว่าถ้า pipeline ของ MR ผ่าน หลัง merge แล้ว pipeline ของ target branch ก็จะผ่านเช่นกัน |
 | **Fast-forward merge** | ไม่มีการสร้าง merge commit เลย ประวัติเป็นเส้นตรงสมบูรณ์ (linear history) — แต่มีข้อจำกัดว่า MR ต้องสามารถ fast-forward ได้จริงเท่านั้น (ถ้า target branch เปลี่ยนไปแล้ว ต้อง rebase ก่อนถึงจะ merge ได้) |
 
 ### 478.2 Squash Commits: ตัวเลือกที่แยกออกมาต่างหาก (จุดที่มือใหม่มักเข้าใจผิด)

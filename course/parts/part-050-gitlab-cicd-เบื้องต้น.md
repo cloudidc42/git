@@ -714,7 +714,7 @@ info-job:
 กำลังรันบน branch main
 Commit SHA (แบบย่อ) 3f9a1b2
 Pipeline นี้คือหมายเลข 42 ของโปรเจกต์ my-project
-รันโดยผู้ใช้ phutjirakul
+รันโดยผู้ใช้ somchai-jaidee
 แหล่งที่มาของ pipeline: push
 ```
 
@@ -764,10 +764,10 @@ Pipeline นี้คือหมายเลข 42 ของโปรเจก�
 https://gitlab.com/<namespace>/<project>/badges/<branch>/pipeline.svg
 ```
 
-ตัวอย่างเช่น ถ้าโปรเจกต์อยู่ที่ `https://gitlab.com/phutjirakul/my-project` และต้องการ badge ของ branch `main`:
+ตัวอย่างเช่น ถ้าโปรเจกต์อยู่ที่ `https://gitlab.com/somchai-jaidee/my-project` และต้องการ badge ของ branch `main`:
 
 ```
-https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg
+https://gitlab.com/somchai-jaidee/my-project/badges/main/pipeline.svg
 ```
 
 ### 499.3 ฝัง badge ลงใน README.md
@@ -775,7 +775,7 @@ https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg
 การฝัง badge ใน Markdown ทำโดยใช้ syntax รูปภาพ ครอบด้วยลิงก์ที่คลิกแล้วพาไปดูหน้า pipeline จริง:
 
 ```markdown
-[![pipeline status](https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg)](https://gitlab.com/phutjirakul/my-project/-/commits/main)
+[![pipeline status](https://gitlab.com/somchai-jaidee/my-project/badges/main/pipeline.svg)](https://gitlab.com/somchai-jaidee/my-project/-/commits/main)
 ```
 
 อธิบายโครงสร้าง Markdown นี้:
@@ -790,7 +790,7 @@ https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg
 นอกจาก pipeline status badge แล้ว ยังมี **Coverage badge** ที่แสดงเปอร์เซ็นต์ code coverage จากผลการรัน test (ต้องตั้งค่า `coverage:` regex ใน job ก่อน ซึ่งเป็นเรื่องที่จะเจาะลึกในเฟส CI/CD ขั้นสูงถัดไป):
 
 ```markdown
-[![coverage report](https://gitlab.com/phutjirakul/my-project/badges/main/coverage.svg)](https://gitlab.com/phutjirakul/my-project/-/commits/main)
+[![coverage report](https://gitlab.com/somchai-jaidee/my-project/badges/main/coverage.svg)](https://gitlab.com/somchai-jaidee/my-project/-/commits/main)
 ```
 
 ### 499.5 ตัวอย่าง README.md ที่มี badge ครบ
@@ -798,8 +798,8 @@ https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg
 ```markdown
 # My Project
 
-[![pipeline status](https://gitlab.com/phutjirakul/my-project/badges/main/pipeline.svg)](https://gitlab.com/phutjirakul/my-project/-/commits/main)
-[![coverage report](https://gitlab.com/phutjirakul/my-project/badges/main/coverage.svg)](https://gitlab.com/phutjirakul/my-project/-/commits/main)
+[![pipeline status](https://gitlab.com/somchai-jaidee/my-project/badges/main/pipeline.svg)](https://gitlab.com/somchai-jaidee/my-project/-/commits/main)
+[![coverage report](https://gitlab.com/somchai-jaidee/my-project/badges/main/coverage.svg)](https://gitlab.com/somchai-jaidee/my-project/-/commits/main)
 
 โปรเจกต์ตัวอย่างสำหรับฝึกใช้งาน GitLab CI/CD
 ```
