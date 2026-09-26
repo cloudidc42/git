@@ -3,8 +3,8 @@
 ไฟล์นี้ใช้ติดตามว่าตอนนี้เขียนเนื้อหาถึง Part ไหนแล้ว อัปเดตทุกครั้งที่มีการเพิ่ม Part ใหม่
 
 - เป้าหมายทั้งหมด: 100 Part / 1000 Step
-- เขียนเสร็จแล้ว: 75 Part (Part 01–75, Step 1–750)
-- กำลังดำเนินการ: เฟส 8 (Part 76–85, Step 751–850) — DevOps/Security/Compliance
+- เขียนเสร็จแล้ว: 85 Part (Part 01–85, Step 1–850)
+- กำลังดำเนินการ: เฟส 9 (Part 86–95, Step 851–950) — มืออาชีพ/Enterprise Practice
 
 ## Log
 
@@ -16,4 +16,5 @@
 - ✅ เฟส 5 เสร็จสมบูรณ์: Part 46–55 (Step 451–550) — ภาพรวม GitLab, setup, Merge Request, Issues/Boards, CI/CD เบื้องต้น, Runner, Pages/Container Registry, Groups/Permission, Security Features, โปรเจกต์ฝึกหัดย้าย GitHub→GitLab
 - ✅ เฟส 6 เสร็จสมบูรณ์: Part 56–65 (Step 551–650) — Object Model, Plumbing Commands, Packfiles, Hooks (client/server-side), Attributes, Git LFS, Performance ของ repo ใหญ่, Worktree, Custom Git Commands
 - ✅ เฟส 7 เสร็จสมบูรณ์: Part 66–75 (Step 651–750) — CI/CD concept, GitHub Actions (พื้นฐาน/matrix/secrets/custom actions), GitLab CI ขั้นสูง/multi-project, automated testing, deploy strategies, โปรเจกต์ฝึกหัด CI/CD ครบวงจร
-- 🚧 เริ่มเฟส 8: Part 76–85 (Step 751–850) DevOps/Security/Compliance กำลังดำเนินการ
+- ✅ เฟส 8 เสร็จสมบูรณ์: Part 76–85 (Step 751–850) — GitOps, Infrastructure as Code, Secret Management, Signed Commits, Dependency Scanning/Supply Chain, Compliance/Audit Trail, Monorepo vs Polyrepo, Enterprise-scale Repository, Disaster Recovery/Backup, โปรเจกต์ฝึกหัด Security Policy
+- 🚧 เริ่มเฟส 9: Part 86–95 (Step 851–950) มืออาชีพ/Enterprise Practice กำลังดำเนินการ
